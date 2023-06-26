@@ -93,16 +93,18 @@ class _MyAppState extends State<MyApp> {
               ),
               SizedBox(height: 25),
               AnyLinkPreview(
-                displayDirection: UIDirection.uiDirectionHorizontal,
+                displayDirection: UIDirection.uiDirectionVertical,
                 link: _url3,
                 errorBody: 'Show my custom error body',
                 errorTitle: 'Next one is youtube link, error title',
+                custom: true,
               ),
               SizedBox(height: 25),
-              AnyLinkPreview(link: _url4),
+              AnyLinkPreview(link: _url4,custom: true,),
               SizedBox(height: 25),
               // Custom preview builder
               AnyLinkPreview.builder(
+                
                 link: _url5,
                 itemBuilder: (context, metadata, imageProvider) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

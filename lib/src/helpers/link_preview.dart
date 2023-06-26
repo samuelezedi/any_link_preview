@@ -102,6 +102,11 @@ class AnyLinkPreview extends StatefulWidget {
   /// `(MediaQuery.of(context).size.height) * 0.25` in case of vertical
   final double? previewHeight;
 
+  /// Defined by Samuel Ezedi
+  /// for DeMe app usage,
+  /// based on he UI specification, I added a custom UI
+  final bool? custom;
+
   /// Function only in [AnyLinkPreview.builder]
   /// allows to build a custom [Widget] from the [Metadata] and [ImageProvider] fetched
   final Widget Function(BuildContext, Metadata, ImageProvider?)? itemBuilder;
@@ -130,6 +135,7 @@ class AnyLinkPreview extends StatefulWidget {
     this.onTap,
     this.previewHeight,
     this.urlLaunchMode = LaunchMode.platformDefault,
+    this.custom,
   })  : itemBuilder = null,
         super(key: key);
 
@@ -158,6 +164,7 @@ class AnyLinkPreview extends StatefulWidget {
         onTap = null,
         previewHeight = null,
         urlLaunchMode = LaunchMode.platformDefault,
+        custom = false,
         super(key: key);
 
   @override
@@ -375,6 +382,7 @@ class AnyLinkPreviewState extends State<AnyLinkPreview> {
               showMultiMedia: widget.showMultimedia,
               bgColor: widget.backgroundColor,
               radius: widget.borderRadius ?? 12,
+              custom: widget.custom ?? false,
             ),
     );
   }

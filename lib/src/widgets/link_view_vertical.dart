@@ -13,6 +13,7 @@ class LinkViewVertical extends StatelessWidget {
   final int? bodyMaxLines;
   final double? radius;
   final Color? bgColor;
+  final bool custom;
 
   LinkViewVertical({
     Key? key,
@@ -21,6 +22,7 @@ class LinkViewVertical extends StatelessWidget {
     required this.description,
     required this.imageProvider,
     required this.onTap,
+    required this.custom,
     this.titleTextStyle,
     this.bodyTextStyle,
     this.showMultiMedia,
@@ -67,35 +69,42 @@ class LinkViewVertical extends StatelessWidget {
 
       return InkWell(
           onTap: () => onTap(),
-          child: Column(
-            children: <Widget>[
-              showMultiMedia!
-                  ? Expanded(
-                      flex: 2,
-                      child: imageProvider == null
-                          ? Container(color: bgColor ?? Colors.grey)
-                          : Container(
-                              padding: EdgeInsets.only(bottom: 15),
-                              decoration: BoxDecoration(
-                                borderRadius: radius == 0
-                                    ? BorderRadius.zero
-                                    : BorderRadius.only(
-                                        topLeft: Radius.circular(12),
-                                        topRight: Radius.circular(12),
+          child: custom
+              ? _customContainer(
+                  titleTS_: titleTS_,
+                  bodyTS_: bodyTS_,
+                  layoutWidth: layoutWidth,
+                  layoutHeight: layoutHeight)
+              : Column(
+                  children: <Widget>[
+                    showMultiMedia!
+                        ? Expanded(
+                            flex: 2,
+                            child: imageProvider == null
+                                ? Container(color: bgColor ?? Colors.grey)
+                                : Container(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: radius == 0
+                                          ? BorderRadius.zero
+                                          : BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
+                                            ),
+                                      image: DecorationImage(
+                                        image: imageProvider!,
+                                        fit: BoxFit.fitWidth,
                                       ),
-                                image: DecorationImage(
-                                  image: imageProvider!,
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
-                    )
-                  : SizedBox(height: 5),
-              _buildTitleContainer(
-                  titleTS_, computeTitleLines(layoutHeight, layoutWidth)),
-              _buildBodyContainer(bodyTS_, computeBodyLines(layoutHeight)),
-            ],
-          ));
+                                    ),
+                                  ),
+                          )
+                        : SizedBox(height: 5),
+                    _buildTitleContainer(
+                        titleTS_, computeTitleLines(layoutHeight, layoutWidth)),
+                    _buildBodyContainer(
+                        bodyTS_, computeBodyLines(layoutHeight)),
+                  ],
+                ));
     });
   }
 
@@ -133,6 +142,64 @@ class LinkViewVertical extends StatelessWidget {
             maxLines: bodyMaxLines ?? maxLines_,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _customContainer({
+    required TextStyle titleTS_,
+    required TextStyle bodyTS_,
+    required double layoutWidth,
+    required double layoutHeight,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: bgColor ?? Colors.grey,
+        borderRadius:
+            radius == 0 ? BorderRadius.zero : BorderRadius.circular(12),
+        image: DecorationImage(
+          image: imageProvider!,
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Spacer(),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(12))),
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: titleTS_.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Icon(
+                    Icons.open_in_new,
+                    size: 15,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Flexible(child: Text(description, style: bodyTS_)),
+                ],
+              ),
+            ]),
+          )
+        ],
       ),
     );
   }
