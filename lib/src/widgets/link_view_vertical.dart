@@ -177,10 +177,14 @@ class LinkViewVertical extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    title,
-                    style: titleTS_.copyWith(
-                      decoration: TextDecoration.underline,
+                  Flexible(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: titleTS_.copyWith(
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                   Icon(
